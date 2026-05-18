@@ -1,11 +1,11 @@
 const CACHE_NAME = 'tracker-v1'
 
 const urlsToCache = [
-    '/',
-    '/index.html',
-    '/assets/css/style.css',
-    '/assets/js/app.js',
-    '/assets/data/programme.json'
+    './',
+    './index.html',
+    './assets/css/style.css',
+    './assets/js/app.js',
+    './assets/data/programme.json'
 ]
 
 self.addEventListener('install', event => {
