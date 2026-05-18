@@ -1,0 +1,233 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #0a0a0a;
+    --surface : #111111;
+    --card: #1a1a1a;
+    --border: #2a2a2a;
+    --violet: #7c3aed;
+    --violet-light: #a855f7;
+    --text: #f0f0f0;
+    --muted: #666666;
+    --violet-alpha: rgba(124, 58, 237, 0.2);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+header {
+    text-align: center;
+    padding: 32px 0 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--violet-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+header p{
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 6px;
+    letter-spacing: 1px;
+}
+
+nav {
+    margin-bottom: 24px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 8px;
+    margin-bottom: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+nav ul::-webkit-scrollbar {
+    display: none;
+}
+
+nav li {
+    flex-shrink: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+nav li:hover {
+    border-color: var(--violet);
+    color: var(--violet-light);
+}
+
+nav li.active {
+    background: var(--violet);
+    border-color: var(--violet);
+    color: var(--text);
+}
+
+.exercice {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.exercice h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.exercice p {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 12px;
+}
+
+.exercice input {
+    width: 48%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 0.82rem;
+    padding: 8px 10px;
+    font-family: 'Inter', sans-serif;
+    margin: 2px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+
+.exercice input:focus {
+    border-color: var(--violet);
+}
+
+main h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+main > p {
+    font-size: 0.8rem;
+    color: var(--violet-light);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.exercice p {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 12px;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.badge-superset {
+    display: inline-block;
+    background:var(--violet-alpha) ;
+    color: var(--violet-light);
+    font-size: 0.68rem;
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.circuit {
+    background-color: var(--violet-alpha);
+    border: 1px solid var(--violet);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.circuit h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--violet-light);
+    margin-bottom: 8px ;
+}
+
+.circuit-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.circuit-item span {
+    font-size: 0.85rem;
+    color: var(--text);
+}
+
+.circuit-item input {
+    width: 80px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 0.82rem;
+    padding: 6px 10px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+.circuit-item input:focus {
+    border-color: var(--violet);
+}
+
+
+textarea {
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 0.85rem;
+    padding: 12px;
+    font-family: 'Inter', sans-serif;
+    resize: none;
+    outline: none;
+    min-height: 100px;
+    margin-top: 12px;
+    transition: border-color 0.2s;
+}
+
+textarea:focus{
+    border-color: var(--violet);
+}
+
+textarea::placeholder{
+    color: var(--muted);
+}

@@ -1,0 +1,286 @@
+{
+    "sessions": [
+        {
+            "id": 1,
+            "titre": "Bas du corps",
+            "focus": "Chaîne antérieure",
+            "exercices": [
+                {
+                    "id": 1,
+                    "nom": "Squat classique à la barre",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": false
+                },
+                {
+                    "id": 2,
+                    "nom": "Leg press",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": true
+                },
+                {
+                    "id": 3,
+                    "nom": "Extension mollets à la presse",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": true
+                },
+                {
+                    "id": 4,
+                    "nom": "Leg Extension",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false
+                },
+                {
+                    "id": 5,
+                    "nom": "Adducteurs machine",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false
+                },
+                {
+                    "id": 6,
+                    "nom": "Goblet Squat talons surélevés",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false
+                }
+            ],
+            "circuit_abdos": [
+                {
+                    "nom": "Gainage ventral",
+                    "type": "temps"
+                },
+                {
+                    "nom": "Gainage oblique G+D",
+                    "type": "temps"
+                },
+                {
+                    "nom": "Superman",
+                    "type": "temps"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "titre": "Haut du corps",
+            "focus": "Push",
+            "exercices": [
+                {
+                    "id": 1,
+                    "nom": "Développé couché",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": false
+                },
+                {
+                    "id": 2,
+                    "nom": "Chest Press inclinée à disques",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": false
+                },
+                {
+                    "id": 3,
+                    "nom": "Shoulder Press guidée",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": false
+                },
+                {
+                    "id": 4,
+                    "nom": "Élévations latérales haltères",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false
+                },
+                {
+                    "id": 5,
+                    "nom": "Triceps Press Down poulie haute",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false,
+                    "semaine": "A"
+                },
+                {
+                    "id": 6,
+                    "nom": "Extension nuque barre EZ",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false,
+                    "semaine": "B"
+                },
+                {
+                    "id": 7,
+                    "nom": "Hollow Hold statique",
+                    "series": 4,
+                    "reps": "temps",
+                    "superset": false
+                },
+                {
+                    "id": 8,
+                    "nom": "Russian Twists",
+                    "series": 4,
+                    "reps": "20 rotations",
+                    "superset": false
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "titre": "Bas du corps",
+            "focus": "Chaîne postérieure",
+            "exercices": [
+                {
+                    "id": 1,
+                    "nom": "Hip Thrust à la barre",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": false
+                },
+                {
+                    "id": 2,
+                    "nom": "RDL aux haltères",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": false
+                },
+                {
+                    "id": 3,
+                    "nom": "Leg Curl assis",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false
+                },
+                {
+                    "id": 4,
+                    "nom": "Abducteurs machine",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false
+                },
+                {
+                    "id": 5,
+                    "nom": "Banc à lombaires",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false
+                },
+                {
+                    "id": 6,
+                    "nom": "Crunch à charge libre",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "titre": "Haut du corps",
+            "focus": "Pull",
+            "exercices": [
+                {
+                    "id": 1,
+                    "nom": "Tirage vertical",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": false
+                },
+                {
+                    "id": 2,
+                    "nom": "Low Row à disques",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": false
+                },
+                {
+                    "id": 3,
+                    "nom": "Pull Over corde poulie haute",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false
+                },
+                {
+                    "id": 4,
+                    "nom": "Biceps Curl supination haltères",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false
+                },
+                {
+                    "id": 5,
+                    "nom": "Curl Larry Scott barre EZ",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false
+                }
+            ],
+            "circuit_abdos": [
+                {
+                    "nom": "Gainage ventral",
+                    "type": "temps"
+                },
+                {
+                    "nom": "Gainage oblique G+D",
+                    "type": "temps"
+                },
+                {
+                    "nom": "Superman",
+                    "type": "temps"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "titre": "Full Body",
+            "focus": "Séance complète",
+            "exercices": [
+                {
+                    "id": 1,
+                    "nom": "Squat Smith Machine",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": false
+                },
+                {
+                    "id": 2,
+                    "nom": "Extension mollets debout Smith Machine",
+                    "series": 4,
+                    "reps": "12-15",
+                    "superset": false
+                },
+                {
+                    "id": 3,
+                    "nom": "Chest Press guidée",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": false
+                },
+                {
+                    "id": 4,
+                    "nom": "Rowing bûcheron haltère",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": false
+                },
+                {
+                    "id": 5,
+                    "nom": "Shoulder Press à charge libre",
+                    "series": 4,
+                    "reps": "8-10",
+                    "superset": false
+                },
+                {
+                    "id": 6,
+                    "nom": "Fentes marchées",
+                    "series": 4,
+                    "reps": "20 pas",
+                    "superset": false
+                }
+            ]
+        }
+    ]
+}

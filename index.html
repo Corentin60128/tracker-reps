@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#7c3aed">
+    <title>Trackeur de reps</title>
+</head>
+<body>
+
+    <div id="app">
+        <header>
+            <h1>Trackeur de performance</h1>
+            <p>Afficher les jours de la semaine</p>
+        </header>
+
+        <nav>
+            <ul id="nav-mois">
+                <li id="mois-1" onclick="setMonth(1)">1 mois </li>
+                <li id="mois-2" onclick="setMonth(2)">2 mois </li>
+                <li id="mois-3" onclick="setMonth(3)">3 mois</li>
+            </ul>
+
+            <ul id="nav-semaine">
+                <li id="semaine-1" onclick="setWeek(1)">semaine 1</li>
+                <li id="semaine-2" onclick="setWeek(2)">semaine 2</li>
+                <li id="semaine-3" onclick="setWeek(3)">semaine 3</li>
+                <li id="semaine-4" onclick="setWeek(4)">semaine4</li>
+            </ul>
+        </nav>
+
+        <main id="main">
+
+        </main>
+
+    </div>
+
+    <script src="assets/js/app.js"></script>
+    
+</body>
+</html>
