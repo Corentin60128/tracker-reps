@@ -2,7 +2,7 @@
     "name": "Tracker Performance",
     "short_name": "Tracker",
     "description": "Suivi des performances volley ball",
-    "start_url": "/",
+    "start_url": "/tracker-reps/",
     "display": "standalone",
     "background_color": "#0a0a0a",
     "theme_color": "#7c3aed",
