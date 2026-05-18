@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#7c3aed">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Trackeur de reps</title>
 </head>
 <body>
@@ -19,22 +20,62 @@
 
         <nav>
             <ul id="nav-mois">
-                <li id="mois-1" onclick="setMonth(1)">1 mois </li>
-                <li id="mois-2" onclick="setMonth(2)">2 mois </li>
+                <li id="mois-1" onclick="setMonth(1)">1 mois</li>
+                <li id="mois-2" onclick="setMonth(2)">2 mois</li>
                 <li id="mois-3" onclick="setMonth(3)">3 mois</li>
             </ul>
 
             <ul id="nav-semaine">
-                <li id="semaine-1" onclick="setWeek(1)">semaine 1</li>
-                <li id="semaine-2" onclick="setWeek(2)">semaine 2</li>
-                <li id="semaine-3" onclick="setWeek(3)">semaine 3</li>
-                <li id="semaine-4" onclick="setWeek(4)">semaine4</li>
+                <li id="semaine-1" onclick="setWeek(1)">Semaine 1</li>
+                <li id="semaine-2" onclick="setWeek(2)">Semaine 2</li>
+                <li id="semaine-3" onclick="setWeek(3)">Semaine 3</li>
+                <li id="semaine-4" onclick="setWeek(4)">Semaine 4</li>
+            </ul>
+
+            <ul id="nav-views">
+                <li id="view-session" class="active" onclick="showView('session')">💪 Séance</li>
+                <li id="view-stats" onclick="showView('stats')">📈 Stats</li>
+                <li id="view-composition" onclick="showView('composition')">🧬 Compo</li>
             </ul>
         </nav>
 
-        <main id="main">
+        <!-- Vue séance -->
+        <main id="main"></main>
 
-        </main>
+        <!-- Vue stats -->
+        <section id="section-stats" class="hidden">
+
+            <!-- Exercices -->
+            <h2 class="stats-title">📈 Progression</h2>
+            <p class="stats-subtitle">Poids max sur 3 mois</p>
+            <div class="stats-select-wrapper">
+                <select id="select-exercice" onchange="renderChart()"></select>
+            </div>
+            <div id="progression-card"></div>
+            <div class="chart-wrapper">
+                <canvas id="myChart"></canvas>
+            </div>
+
+            <!-- Séparateur -->
+            <div class="stats-divider"></div>
+
+            <!-- Poids corporel -->
+            <h2 class="stats-title">⚖️ Poids corporel</h2>
+            <p class="stats-subtitle">Évolution sur 3 mois</p>
+            <div id="poids-inputs"></div>
+            <div id="poids-progression-card"></div>
+            <div class="chart-wrapper">
+                <canvas id="poidsChart"></canvas>
+            </div>
+
+        </section>
+
+        <!-- Vue composition -->
+        <section id="section-composition" class="hidden">
+            <h2 class="stats-title">🧬 Composition corporelle</h2>
+            <p class="stats-subtitle">Évolution sur 3 mois</p>
+            <div id="composition-inputs"></div>
+        </section>
 
     </div>
 
