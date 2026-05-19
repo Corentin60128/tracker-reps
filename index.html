@@ -13,73 +13,60 @@
 <body>
 
     <div id="app">
+
         <header>
             <h1>Trackeur de performance</h1>
             <p>Afficher les jours de la semaine</p>
         </header>
 
         <nav>
-            <ul id="nav-mois">
-                <li id="mois-1" onclick="setMonth(1)">1 mois</li>
-                <li id="mois-2" onclick="setMonth(2)">2 mois</li>
-                <li id="mois-3" onclick="setMonth(3)">3 mois</li>
+            <!-- Month selector -->
+            <ul id="nav-month">
+                <li id="month-1" onclick="setMonth(1)">Month 1</li>
+                <li id="month-2" onclick="setMonth(2)">Month 2</li>
+                <li id="month-3" onclick="setMonth(3)">Month 3</li>
             </ul>
 
-            <ul id="nav-semaine">
-                <li id="semaine-1" onclick="setWeek(1)">Semaine 1</li>
-                <li id="semaine-2" onclick="setWeek(2)">Semaine 2</li>
-                <li id="semaine-3" onclick="setWeek(3)">Semaine 3</li>
-                <li id="semaine-4" onclick="setWeek(4)">Semaine 4</li>
+            <!-- Week selector -->
+            <ul id="nav-week">
+                <li id="week-1" onclick="setWeek(1)">Week 1</li>
+                <li id="week-2" onclick="setWeek(2)">Week 2</li>
+                <li id="week-3" onclick="setWeek(3)">Week 3</li>
+                <li id="week-4" onclick="setWeek(4)">Week 4</li>
             </ul>
 
+            <!-- View selector -->
             <ul id="nav-views">
                 <li id="view-session" class="active" onclick="showView('session')">💪 Séance</li>
                 <li id="view-stats" onclick="showView('stats')">📈 Stats</li>
-                <li id="view-composition" onclick="showView('composition')">🧬 Compo</li>
+                <li id="view-body" onclick="showView('body')">⚖️ Body</li>
             </ul>
         </nav>
 
-        <!-- Vue séance -->
+        <!-- View: session -->
         <main id="main"></main>
 
-        <!-- Vue stats -->
+        <!-- View: stats -->
         <section id="section-stats" class="hidden">
-
-            <!-- Exercices -->
             <h2 class="stats-title">📈 Progression</h2>
             <p class="stats-subtitle">Poids max sur 3 mois</p>
             <div class="stats-select-wrapper">
-                <select id="select-exercice" onchange="renderChart()"></select>
+                <select id="select-exercise" onchange="renderChart()"></select>
             </div>
-            <div id="progression-card"></div>
+            <div id="card-exercise-progress"></div>
             <div class="chart-wrapper">
-                <canvas id="myChart"></canvas>
+                <canvas id="chart-exercise"></canvas>
             </div>
-
-            <!-- Séparateur -->
-            <div class="stats-divider"></div>
-
-            <!-- Poids corporel -->
-            <h2 class="stats-title">⚖️ Poids corporel</h2>
-            <p class="stats-subtitle">Évolution sur 3 mois</p>
-            <div id="poids-inputs"></div>
-            <div id="poids-progression-card"></div>
-            <div class="chart-wrapper">
-                <canvas id="poidsChart"></canvas>
-            </div>
-
         </section>
 
-        <!-- Vue composition -->
-        <section id="section-composition" class="hidden">
-            <h2 class="stats-title">🧬 Composition corporelle</h2>
-            <p class="stats-subtitle">Évolution sur 3 mois</p>
-            <div id="composition-inputs"></div>
+        <!-- View: body composition -->
+        <section id="section-body" class="hidden">
+            <div id="body-inputs-container"></div>
         </section>
 
     </div>
 
     <script src="assets/js/app.js"></script>
-    
+
 </body>
 </html>

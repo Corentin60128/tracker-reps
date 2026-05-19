@@ -1,4 +1,4 @@
-if('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/assets/js/sw.js')
 }
 
@@ -12,12 +12,12 @@ fetch('assets/data/programme.json')
     .then(data => {
         programmeData = data
         displaySession()
-        document.getElementById('mois-1').classList.add('active')
-        document.getElementById('semaine-1').classList.add('active')
+        document.getElementById('month-1').classList.add('active')
+        document.getElementById('week-1').classList.add('active')
     })
 
 // ─────────────────────────────────────────────
-// NAVIGATION VUES
+// VIEW NAVIGATION
 // ─────────────────────────────────────────────
 
 function showView(view) {
@@ -26,28 +26,23 @@ function showView(view) {
     document.querySelectorAll('#nav-views li').forEach(li => li.classList.remove('active'))
     document.getElementById(`view-${view}`).classList.add('active')
 
-    const main = document.getElementById('main')
-    const stats = document.getElementById('section-stats')
-    const composition = document.getElementById('section-composition')
-
-    main.classList.add('hidden')
-    stats.classList.add('hidden')
-    composition.classList.add('hidden')
+    document.getElementById('main').classList.add('hidden')
+    document.getElementById('section-stats').classList.add('hidden')
+    document.getElementById('section-body').classList.add('hidden')
 
     if (view === 'session') {
-        main.classList.remove('hidden')
+        document.getElementById('main').classList.remove('hidden')
     } else if (view === 'stats') {
-        stats.classList.remove('hidden')
-        initGraphique()
-        renderPoidsSection()
-    } else if (view === 'composition') {
-        composition.classList.remove('hidden')
-        renderCompositionSection()
+        document.getElementById('section-stats').classList.remove('hidden')
+        initChart()
+    } else if (view === 'body') {
+        document.getElementById('section-body').classList.remove('hidden')
+        renderBodySection()
     }
 }
 
 // ─────────────────────────────────────────────
-// SÉANCE
+// SESSION
 // ─────────────────────────────────────────────
 
 function displaySession() {
@@ -65,19 +60,13 @@ function displaySession() {
     const session = programmeData.sessions[sessionIndex]
     const main = document.getElementById('main')
 
-    let exercicesHTML = ''
+    let exercisesHTML = ''
 
-    session.exercices.forEach(exercice => {
-        // Filtre semaine A/B
-        if (exercice.semaine) {
-            const semaineType = currentWeek % 2 === 1 ? 'A' : 'B'
-            if (exercice.semaine !== semaineType) return
-        }
-
+    session.exercices.forEach(exercise => {
         let seriesHTML = ''
 
-        for(let i = 1; i <= exercice.series; i++) {
-            const key = `m${currentMonth}_w${currentWeek}_session${session.id}_exercice${exercice.id}_serie${i}`
+        for (let i = 1; i <= exercise.series; i++) {
+            const key = `m${currentMonth}_w${currentWeek}_session${session.id}_exercise${exercise.id}_set${i}`
             const savedValue = localStorage.getItem(key) || ''
 
             seriesHTML += `
@@ -90,11 +79,11 @@ function displaySession() {
             `
         }
 
-        exercicesHTML += `
+        exercisesHTML += `
             <div class="exercice">
-                ${exercice.superset ? '<span class="badge-superset">⚡ Superset</span>' : ''}
-                <h3>${exercice.nom}</h3>
-                <p>${exercice.series} séries — ${exercice.reps} reps</p>
+                ${exercise.superset ? '<span class="badge-superset">⚡ Superset</span>' : ''}
+                <h3>${exercise.nom}</h3>
+                <p>${exercise.series} séries — ${exercise.reps} reps</p>
                 ${seriesHTML}
             </div>
         `
@@ -102,7 +91,7 @@ function displaySession() {
 
     let circuitHTML = ''
 
-    if(session.circuit_abdos) {
+    if (session.circuit_abdos) {
         let itemsHTML = ''
 
         session.circuit_abdos.forEach(item => {
@@ -132,7 +121,7 @@ function displaySession() {
     main.innerHTML = `
         <h2>${session.titre}</h2>
         <p>${session.focus}</p>
-        ${exercicesHTML}
+        ${exercisesHTML}
         ${circuitHTML}
         <textarea 
             placeholder="📝 Notes de séance, ressenti, RPE..."
@@ -143,75 +132,71 @@ function displaySession() {
 
 function setMonth(month) {
     currentMonth = month
-    document.querySelectorAll('#nav-mois li').forEach(li => li.classList.remove('active'))
-    document.getElementById(`mois-${month}`).classList.add('active')
+    document.querySelectorAll('#nav-month li').forEach(li => li.classList.remove('active'))
+    document.getElementById(`month-${month}`).classList.add('active')
     displaySession()
-    if (currentView === 'stats') {
-        renderChart()
-        renderPoidsChart()
-    }
+    if (currentView === 'stats') renderChart()
+    if (currentView === 'body') renderAllBodyCharts()
 }
 
 function setWeek(week) {
     currentWeek = week
-    document.querySelectorAll('#nav-semaine li').forEach(li => li.classList.remove('active'))
-    document.getElementById(`semaine-${week}`).classList.add('active')
+    document.querySelectorAll('#nav-week li').forEach(li => li.classList.remove('active'))
+    document.getElementById(`week-${week}`).classList.add('active')
     displaySession()
-    if (currentView === 'stats') {
-        renderChart()
-        renderPoidsChart()
-    }
+    if (currentView === 'stats') renderChart()
+    if (currentView === 'body') renderAllBodyCharts()
 }
 
 // ─────────────────────────────────────────────
-// GRAPHIQUE EXERCICES
+// STATS — EXERCISE CHART
 // ─────────────────────────────────────────────
 
-let chartInstance = null
+let exerciseChartInstance = null
 
-function getExerciceList() {
-    const exercices = []
+function getExerciseList() {
+    const exercises = []
     programmeData.sessions.forEach(session => {
         session.exercices.forEach(ex => {
-            if (!exercices.find(e => e.id === ex.id)) {
-                exercices.push({ id: ex.id, nom: ex.nom, sessionId: session.id })
+            if (!exercises.find(e => e.id === ex.id && e.sessionId === session.id)) {
+                exercises.push({ id: ex.id, nom: ex.nom, sessionId: session.id, sessionTitle: session.titre })
             }
         })
     })
-    return exercices
+    return exercises
 }
 
 function populateSelect() {
-    const select = document.getElementById('select-exercice')
+    const select = document.getElementById('select-exercise')
     if (!select) return
-    const exercices = getExerciceList()
-    select.innerHTML = exercices.map(ex =>
-        `<option value="${ex.id}_${ex.sessionId}">${ex.nom}</option>`
+    const exercises = getExerciseList()
+    select.innerHTML = exercises.map(ex =>
+        `<option value="${ex.id}_${ex.sessionId}">${ex.nom} — ${ex.sessionTitle}</option>`
     ).join('')
 }
 
-function getPoidsMax12Semaines(exerciceId, sessionId) {
+function getMaxWeight12Weeks(exerciseId, sessionId) {
     const data = []
     const labels = []
 
     for (let month = 1; month <= 3; month++) {
         for (let week = 1; week <= 4; week++) {
-            labels.push(`M${month} S${week}`)
-            let poidsMax = null
+            labels.push(`M${month} W${week}`)
+            let maxWeight = null
 
-            for (let serie = 1; serie <= 10; serie++) {
-                const key = `m${month}_w${week}_session${sessionId}_exercice${exerciceId}_serie${serie}`
+            for (let set = 1; set <= 10; set++) {
+                const key = `m${month}_w${week}_session${sessionId}_exercise${exerciseId}_set${set}`
                 const val = localStorage.getItem(key)
                 if (!val) continue
 
                 const match = val.replace(',', '.').match(/(\d+(\.\d+)?)/)
                 if (match) {
-                    const poids = parseFloat(match[1])
-                    if (poidsMax === null || poids > poidsMax) poidsMax = poids
+                    const weight = parseFloat(match[1])
+                    if (maxWeight === null || weight > maxWeight) maxWeight = weight
                 }
             }
 
-            data.push(poidsMax)
+            data.push(maxWeight)
         }
     }
 
@@ -219,17 +204,15 @@ function getPoidsMax12Semaines(exerciceId, sessionId) {
 }
 
 function calcProgression(data) {
-    const valeurs = data.filter(v => v !== null)
-    if (valeurs.length < 2) return null
-
-    const debut = valeurs[0]
-    const fin = valeurs[valeurs.length - 1]
-    const pct = ((fin - debut) / debut) * 100
-
-    return { debut, fin, pct: Math.round(pct * 10) / 10 }
+    const values = data.filter(v => v !== null)
+    if (values.length < 2) return null
+    const start = values[0]
+    const end = values[values.length - 1]
+    const pct = ((end - start) / start) * 100
+    return { start, end, pct: Math.round(pct * 10) / 10 }
 }
 
-function renderProgressionCard(cardId, data, unite = 'kg') {
+function renderProgressionCard(cardId, data, unit = 'kg', inverseColors = false) {
     const card = document.getElementById(cardId)
     if (!card) return
 
@@ -240,53 +223,40 @@ function renderProgressionCard(cardId, data, unite = 'kg') {
         return
     }
 
-    const { debut, fin, pct } = result
-    const isPositif = pct >= 0
-    const sign = isPositif ? '+' : ''
-    const classe = isPositif ? 'prog-positif' : 'prog-negatif'
-    const emoji = isPositif ? '📈' : '📉'
+    const { start, end, pct } = result
+    const isPositive = pct >= 0
+    const sign = isPositive ? '+' : ''
+    const isGood = inverseColors ? !isPositive : isPositive
+    const colorClass = isGood ? 'prog-positif' : 'prog-negatif'
+    const emoji = isGood ? '📈' : '📉'
 
     card.innerHTML = `
         <div class="prog-left">
             <span class="prog-label">Progression totale</span>
-            <span class="prog-detail">${debut} ${unite} → ${fin} ${unite}</span>
+            <span class="prog-detail">${start} ${unit} → ${end} ${unit}</span>
         </div>
-        <div class="prog-right ${classe}">
+        <div class="prog-right ${colorClass}">
             <span class="prog-emoji">${emoji}</span>
             <span class="prog-pct">${sign}${pct}%</span>
         </div>
     `
 }
 
-function renderChart() {
-    const select = document.getElementById('select-exercice')
-    if (!select || !select.value) return
-
-    const [exerciceId, sessionId] = select.value.split('_')
-    const { data, labels } = getPoidsMax12Semaines(exerciceId, sessionId)
-
-    renderProgressionCard('progression-card', data, 'kg')
-
-    if (chartInstance) chartInstance.destroy()
-
-    const canvas = document.getElementById('myChart')
-    if (!canvas) return
+function buildChart(canvasId, labels, data, color, colorAlpha, unit, accentColor) {
+    const canvas = document.getElementById(canvasId)
+    if (!canvas) return null
 
     const ctx = canvas.getContext('2d')
-    chartInstance = new Chart(ctx, {
+    return new Chart(ctx, {
         type: 'line',
         data: {
             labels,
             datasets: [{
-                label: 'Poids max (kg)',
                 data,
-                borderColor: '#7c3aed',
-                backgroundColor: 'rgba(124, 58, 237, 0.15)',
+                borderColor: color,
+                backgroundColor: colorAlpha,
                 borderWidth: 2,
-                pointBackgroundColor: (ctx) => {
-                    const colors = ['#7c3aed', '#a855f7', '#ec4899']
-                    return colors[Math.floor(ctx.dataIndex / 4)]
-                },
+                pointBackgroundColor: color,
                 pointBorderColor: 'transparent',
                 pointRadius: 6,
                 pointHoverRadius: 8,
@@ -303,17 +273,17 @@ function renderChart() {
                     backgroundColor: '#1a1a1a',
                     borderColor: '#2a2a2a',
                     borderWidth: 1,
-                    titleColor: '#a855f7',
+                    titleColor: accentColor || color,
                     bodyColor: '#f0f0f0',
                     callbacks: {
-                        label: ctx => ctx.raw !== null ? `${ctx.raw} kg` : 'Pas de données'
+                        label: ctx => ctx.raw !== null ? `${ctx.raw} ${unit}` : 'No data'
                     }
                 }
             },
             scales: {
                 x: {
                     ticks: {
-                        color: (ctx) => ctx.index % 4 === 0 ? '#a855f7' : '#666666',
+                        color: (ctx) => ctx.index % 4 === 0 ? (accentColor || color) : '#666666',
                         font: (ctx) => ({ weight: ctx.index % 4 === 0 ? '600' : '400' })
                     },
                     grid: { color: '#2a2a2a' }
@@ -322,32 +292,52 @@ function renderChart() {
                     beginAtZero: false,
                     ticks: { color: '#666666' },
                     grid: { color: '#2a2a2a' },
-                    title: { display: true, text: 'kg', color: '#666666' }
+                    title: { display: true, text: unit, color: '#666666' }
                 }
             }
         }
     })
 }
 
-function initGraphique() {
+function renderChart() {
+    const select = document.getElementById('select-exercise')
+    if (!select || !select.value) return
+
+    const [exerciseId, sessionId] = select.value.split('_')
+    const { data, labels } = getMaxWeight12Weeks(exerciseId, sessionId)
+
+    renderProgressionCard('card-exercise-progress', data, 'kg')
+
+    if (exerciseChartInstance) exerciseChartInstance.destroy()
+    exerciseChartInstance = buildChart('chart-exercise', labels, data, '#7c3aed', 'rgba(124,58,237,0.15)', 'kg', '#a855f7')
+}
+
+function initChart() {
     populateSelect()
     renderChart()
 }
 
 // ─────────────────────────────────────────────
-// GRAPHIQUE POIDS CORPOREL
+// BODY COMPOSITION
 // ─────────────────────────────────────────────
 
-let poidsChartInstance = null
+const bodyMetrics = [
+    { key: 'weight',  label: '⚖️ Poids total',     unit: 'kg', color: '#ec4899', colorAlpha: 'rgba(236,72,153,0.15)',  inverse: true  },
+    { key: 'fat',     label: '🟠 Masse grasse',     unit: '%',  color: '#f97316', colorAlpha: 'rgba(249,115,22,0.15)', inverse: true  },
+    { key: 'muscle',  label: '💪 Masse musculaire', unit: '%',  color: '#22d3ee', colorAlpha: 'rgba(34,211,238,0.15)', inverse: false },
+    { key: 'hydro',   label: '💧 Volume hydrique',  unit: '%',  color: '#4ade80', colorAlpha: 'rgba(74,222,128,0.15)', inverse: false },
+]
 
-function getPoids12Semaines() {
+let bodyChartInstances = {}
+
+function getMetric12Weeks(metricKey) {
     const data = []
     const labels = []
 
     for (let month = 1; month <= 3; month++) {
         for (let week = 1; week <= 4; week++) {
-            labels.push(`M${month} S${week}`)
-            const key = `poids_m${month}_w${week}`
+            labels.push(`M${month} W${week}`)
+            const key = `body_${metricKey}_m${month}_w${week}`
             const val = localStorage.getItem(key)
             const match = val ? val.replace(',', '.').match(/(\d+(\.\d+)?)/) : null
             data.push(match ? parseFloat(match[1]) : null)
@@ -357,239 +347,71 @@ function getPoids12Semaines() {
     return { data, labels }
 }
 
-function renderPoidsSection() {
-    const container = document.getElementById('poids-inputs')
+function renderBodySection() {
+    const container = document.getElementById('body-inputs-container')
     if (!container) return
 
     let html = ''
-    for (let month = 1; month <= 3; month++) {
-        html += `<p class="poids-mois-label">Mois ${month}</p>`
-        html += `<div class="poids-grid">`
-        for (let week = 1; week <= 4; week++) {
-            const key = `poids_m${month}_w${week}`
-            const saved = localStorage.getItem(key) || ''
-            html += `
-                <div class="poids-input-wrap">
-                    <label>S${week}</label>
-                    <input 
-                        type="number" 
-                        placeholder="kg" 
-                        value="${saved}"
-                        oninput="localStorage.setItem('${key}', this.value); renderPoidsChart()"
-                    >
-                </div>
-            `
-        }
-        html += `</div>`
-    }
-    container.innerHTML = html
-    renderPoidsChart()
-}
 
-function renderPoidsChart() {
-    const { data, labels } = getPoids12Semaines()
-
-    renderProgressionCard('poids-progression-card', data, 'kg')
-
-    if (poidsChartInstance) poidsChartInstance.destroy()
-
-    const canvas = document.getElementById('poidsChart')
-    if (!canvas) return
-
-    const ctx = canvas.getContext('2d')
-    poidsChartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels,
-            datasets: [{
-                label: 'Poids (kg)',
-                data,
-                borderColor: '#ec4899',
-                backgroundColor: 'rgba(236, 72, 153, 0.15)',
-                borderWidth: 2,
-                pointBackgroundColor: (ctx) => {
-                    const colors = ['#ec4899', '#f472b6', '#fb7185']
-                    return colors[Math.floor(ctx.dataIndex / 4)]
-                },
-                pointBorderColor: 'transparent',
-                pointRadius: 6,
-                pointHoverRadius: 8,
-                tension: 0.4,
-                fill: true,
-                spanGaps: true
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#1a1a1a',
-                    borderColor: '#2a2a2a',
-                    borderWidth: 1,
-                    titleColor: '#ec4899',
-                    bodyColor: '#f0f0f0',
-                    callbacks: {
-                        label: ctx => ctx.raw !== null ? `${ctx.raw} kg` : 'Pas de données'
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: (ctx) => ctx.index % 4 === 0 ? '#f472b6' : '#666666',
-                        font: (ctx) => ({ weight: ctx.index % 4 === 0 ? '600' : '400' })
-                    },
-                    grid: { color: '#2a2a2a' }
-                },
-                y: {
-                    beginAtZero: false,
-                    ticks: { color: '#666666' },
-                    grid: { color: '#2a2a2a' },
-                    title: { display: true, text: 'kg', color: '#666666' }
-                }
-            }
-        }
-    })
-}
-
-// ─────────────────────────────────────────────
-// COMPOSITION CORPORELLE
-// ─────────────────────────────────────────────
-
-function getComposition12Semaines(type) {
-    const data = []
-    const labels = []
-
-    for (let month = 1; month <= 3; month++) {
-        for (let week = 1; week <= 4; week++) {
-            labels.push(`M${month} S${week}`)
-            const key = `${type}_m${month}_w${week}`
-            const val = localStorage.getItem(key)
-            const match = val ? val.replace(',', '.').match(/(\d+(\.\d+)?)/) : null
-            data.push(match ? parseFloat(match[1]) : null)
-        }
-    }
-
-    return { data, labels }
-}
-
-function renderCompositionSection() {
-    const container = document.getElementById('composition-inputs')
-    if (!container) return
-
-    const metrics = [
-        { key: 'masse_grasse', label: 'Masse grasse', unite: '%', color: '#f97316' },
-        { key: 'masse_musculaire', label: 'Masse musculaire', unite: 'kg', color: '#10b981' },
-        { key: 'volume_hydrique', label: 'Volume hydrique', unite: '%', color: '#3b82f6' }
-    ]
-
-    let html = ''
-
-    metrics.forEach(metric => {
+    bodyMetrics.forEach(metric => {
         html += `
-            <div class="composition-block">
-                <h3 class="composition-titre" style="color: ${metric.color}">${metric.label}</h3>
-                <div id="prog-${metric.key}" class="progression-card"></div>
-                <div id="inputs-${metric.key}">
-        `
-
-        for (let month = 1; month <= 3; month++) {
-            html += `<p class="poids-mois-label">Mois ${month}</p><div class="poids-grid">`
-            for (let week = 1; week <= 4; week++) {
-                const key = `${metric.key}_m${month}_w${week}`
-                const saved = localStorage.getItem(key) || ''
-                html += `
-                    <div class="poids-input-wrap">
-                        <label>S${week}</label>
-                        <input 
-                            type="number" 
-                            placeholder="${metric.unite}" 
-                            value="${saved}"
-                            oninput="localStorage.setItem('${key}', this.value); renderCompositionCharts()"
-                        >
-                    </div>
-                `
-            }
-            html += `</div>`
-        }
-
-        html += `
+            <div class="body-bloc">
+                <h2 class="stats-title" style="color:${metric.color}">${metric.label}</h2>
+                <p class="stats-subtitle">Évolution sur 3 mois</p>
+                <div id="inputs-${metric.key}"></div>
+                <div id="card-${metric.key}" class="progression-card"></div>
+                <div class="chart-wrapper">
+                    <canvas id="chart-${metric.key}"></canvas>
                 </div>
-                <canvas id="chart-${metric.key}" height="120"></canvas>
+                <div class="stats-divider"></div>
             </div>
         `
     })
 
     container.innerHTML = html
-    renderCompositionCharts()
+
+    bodyMetrics.forEach(metric => {
+        const inputContainer = document.getElementById(`inputs-${metric.key}`)
+        let inputsHTML = ''
+
+        for (let month = 1; month <= 3; month++) {
+            inputsHTML += `<p class="poids-mois-label">Month ${month}</p><div class="poids-grid">`
+            for (let week = 1; week <= 4; week++) {
+                const key = `body_${metric.key}_m${month}_w${week}`
+                const saved = localStorage.getItem(key) || ''
+                inputsHTML += `
+                    <div class="poids-input-wrap">
+                        <label>W${week}</label>
+                        <input 
+                            type="number" 
+                            placeholder="${metric.unit}" 
+                            value="${saved}"
+                            oninput="localStorage.setItem('${key}', this.value); renderSingleBodyChart('${metric.key}')"
+                        >
+                    </div>
+                `
+            }
+            inputsHTML += `</div>`
+        }
+
+        inputContainer.innerHTML = inputsHTML
+    })
+
+    renderAllBodyCharts()
 }
 
-function renderCompositionCharts() {
-    const metrics = [
-        { key: 'masse_grasse', label: 'Masse grasse', unite: '%', color: '#f97316' },
-        { key: 'masse_musculaire', label: 'Masse musculaire', unite: 'kg', color: '#10b981' },
-        { key: 'volume_hydrique', label: 'Volume hydrique', unite: '%', color: '#3b82f6' }
-    ]
+function renderSingleBodyChart(metricKey) {
+    const metric = bodyMetrics.find(m => m.key === metricKey)
+    if (!metric) return
 
-    metrics.forEach(metric => {
-        const { data, labels } = getComposition12Semaines(metric.key)
+    const { data, labels } = getMetric12Weeks(metricKey)
 
-        renderProgressionCard(`prog-${metric.key}`, data, metric.unite)
+    renderProgressionCard(`card-${metricKey}`, data, metric.unit, metric.inverse)
 
-        const canvas = document.getElementById(`chart-${metric.key}`)
-        if (!canvas) return
+    if (bodyChartInstances[metricKey]) bodyChartInstances[metricKey].destroy()
+    bodyChartInstances[metricKey] = buildChart(`chart-${metricKey}`, labels, data, metric.color, metric.colorAlpha, metric.unit)
+}
 
-        if (canvas._chartInstance) canvas._chartInstance.destroy()
-
-        const ctx = canvas.getContext('2d')
-        canvas._chartInstance = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels,
-                datasets: [{
-                    label: metric.label,
-                    data,
-                    borderColor: metric.color,
-                    backgroundColor: metric.color + '26',
-                    borderWidth: 2,
-                    pointBackgroundColor: metric.color,
-                    pointBorderColor: 'transparent',
-                    pointRadius: 6,
-                    pointHoverRadius: 8,
-                    tension: 0.4,
-                    fill: true,
-                    spanGaps: true
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: '#1a1a1a',
-                        borderColor: '#2a2a2a',
-                        borderWidth: 1,
-                        titleColor: metric.color,
-                        bodyColor: '#f0f0f0',
-                        callbacks: {
-                            label: ctx => ctx.raw !== null ? `${ctx.raw} ${metric.unite}` : 'Pas de données'
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        ticks: { color: '#666666' },
-                        grid: { color: '#2a2a2a' }
-                    },
-                    y: {
-                        beginAtZero: false,
-                        ticks: { color: '#666666' },
-                        grid: { color: '#2a2a2a' },
-                        title: { display: true, text: metric.unite, color: '#666666' }
-                    }
-                }
-            }
-        })
-    })
+function renderAllBodyCharts() {
+    bodyMetrics.forEach(m => renderSingleBodyChart(m.key))
 }
