@@ -68,6 +68,12 @@ function displaySession() {
     let exercicesHTML = ''
 
     session.exercices.forEach(exercice => {
+        // Filtre semaine A/B
+        if (exercice.semaine) {
+            const semaineType = currentWeek % 2 === 1 ? 'A' : 'B'
+            if (exercice.semaine !== semaineType) return
+        }
+
         let seriesHTML = ''
 
         for(let i = 1; i <= exercice.series; i++) {
