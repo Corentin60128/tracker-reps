@@ -427,3 +427,53 @@ function renderSingleBodyChart(metricKey) {
 function renderAllBodyCharts() {
     bodyMetrics.forEach(m => renderSingleBodyChart(m.key))
 }
+
+// ─────────────────────────────────────────────
+// SWIPE NAVIGATION (GESTION DU TACTILE)
+// ─────────────────────────────────────────────
+
+let touchstartX = 0
+let touchendX = 0
+let touchstartY = 0
+let touchendY = 0
+
+// Capture de la position de départ du doigt
+document.addEventListener('touchstart', e => {
+    touchstartX = e.changedTouches[0].screenX
+    touchstartY = e.changedTouches[0].screenY
+}, { passive: true })
+
+// Capture de la position de fin et analyse du mouvement
+document.addEventListener('touchend', e => {
+    touchendX = e.changedTouches[0].screenX
+    touchendY = e.changedTouches[0].screenY
+    handleSwipe(e)
+}, { passive: true })
+
+function handleSwipe(e) {
+    // 1. On autorise le swipe UNIQUEMENT sur la vue "séance"
+    if (currentView !== 'session') return
+
+    // 2. On empêche le swipe si l'utilisateur est en train d'écrire dans un champ
+    const targetTag = e.target.tagName.toLowerCase()
+    if (targetTag === 'input' || targetTag === 'textarea') return
+
+    const diffX = touchendX - touchstartX
+    const diffY = touchendY - touchstartY
+    
+    // 3. Le mouvement doit être horizontal et d'au moins 50 pixels (évite les bugs au clic)
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+        
+        if (diffX < 0) {
+            // Swipe vers la gauche (←) : On passe à la séance suivante
+            if (programmeData && currentSession < programmeData.sessions.length - 1) {
+                setSession(currentSession + 1)
+            }
+        } else {
+            // Swipe vers la droite (→) : On revient à la séance précédente
+            if (programmeData && currentSession > 0) {
+                setSession(currentSession - 1)
+            }
+        }
+    }
+}
