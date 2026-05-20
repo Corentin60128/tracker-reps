@@ -6,7 +6,7 @@
 
 :root {
     --bg: #0a0a0a;
-    --surface : #111111;
+    --surface: #111111;
     --card: #1a1a1a;
     --border: #2a2a2a;
     --violet: #7c3aed;
@@ -14,9 +14,6 @@
     --text: #f0f0f0;
     --muted: #666666;
     --violet-alpha: rgba(124, 58, 237, 0.2);
-    --green: #4ade80;
-    --red: #f87171;
-    --pink: #ec4899;
 }
 
 body {
@@ -28,6 +25,12 @@ body {
     padding: 16px;
 }
 
+/* ─── UTILITAIRE ─── */
+.hidden {
+    display: none !important;
+}
+
+/* ─── HEADER ─── */
 header {
     text-align: center;
     padding: 32px 0 24px;
@@ -43,13 +46,14 @@ header h1 {
     text-transform: uppercase;
 }
 
-header p{
+header p {
     font-size: 0.8rem;
     color: var(--muted);
     margin-top: 6px;
     letter-spacing: 1px;
 }
 
+/* ─── NAV ─── */
 nav {
     margin-bottom: 24px;
 }
@@ -90,6 +94,18 @@ nav li.active {
     color: var(--text);
 }
 
+#nav-views {
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+    margin-top: 4px;
+}
+
+#nav-views li {
+    font-weight: 600;
+    font-size: 0.82rem;
+}
+
+/* ─── SÉANCE ─── */
 .exercice {
     background: var(--card);
     border: 1px solid var(--border);
@@ -125,7 +141,6 @@ nav li.active {
     transition: border-color 0.2s;
 }
 
-
 .exercice input:focus {
     border-color: var(--violet);
 }
@@ -145,17 +160,9 @@ main > p {
     letter-spacing: 1px;
 }
 
-.exercice p {
-    font-size: 0.75rem;
-    color: var(--muted);
-    margin-bottom: 12px;
-    text-transform: none;
-    letter-spacing: 0;
-}
-
 .badge-superset {
     display: inline-block;
-    background:var(--violet-alpha) ;
+    background: var(--violet-alpha);
     color: var(--violet-light);
     font-size: 0.68rem;
     padding: 3px 8px;
@@ -177,7 +184,7 @@ main > p {
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--violet-light);
-    margin-bottom: 8px ;
+    margin-bottom: 8px;
 }
 
 .circuit-item {
@@ -210,7 +217,6 @@ main > p {
     border-color: var(--violet);
 }
 
-
 textarea {
     width: 100%;
     background: var(--card);
@@ -227,19 +233,20 @@ textarea {
     transition: border-color 0.2s;
 }
 
-textarea:focus{
+textarea:focus {
     border-color: var(--violet);
 }
 
-textarea::placeholder{
+textarea::placeholder {
     color: var(--muted);
 }
 
+/* ─── STATS ─── */
 #section-stats {
     padding-top: 4px;
 }
 
-.stats-tile {
+.stats-title {
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--text);
@@ -273,7 +280,7 @@ textarea::placeholder{
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 14px center;
-    transition: broder-color 0.2s;
+    transition: border-color 0.2s;
 }
 
 .stats-select-wrapper select:focus {
@@ -292,15 +299,12 @@ textarea::placeholder{
     padding: 16px;
 }
 
-.hidden {
-    display: none;
-}
-
+/* ─── CARTE PROGRESSION ─── */
 #progression-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background:var(--card) ;
+    background: var(--card);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 14px 16px;
@@ -343,11 +347,11 @@ textarea::placeholder{
 }
 
 .prog-positif .prog-pct {
-    color: var(--green);
+    color: #4ade80;
 }
 
 .prog-negatif .prog-pct {
-    color: var(--red);
+    color: #f87171;
 }
 
 .prog-empty {
@@ -358,7 +362,7 @@ textarea::placeholder{
     padding: 4px 0;
 }
 
-
+/* ─── POIDS CORPOREL ─── */
 .stats-divider {
     border: none;
     border-top: 1px solid var(--border);
@@ -370,7 +374,7 @@ textarea::placeholder{
     color: var(--violet-light);
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-weight: 600;  
+    font-weight: 600;
     margin-bottom: 8px;
     margin-top: 4px;
 }
@@ -410,7 +414,7 @@ textarea::placeholder{
 }
 
 .poids-input-wrap input:focus {
-    border-color:var(--pink) ;
+    border-color: #ec4899;
 }
 
 #poids-progression-card {
@@ -422,4 +426,11 @@ textarea::placeholder{
     border-radius: 12px;
     padding: 14px 16px;
     margin-bottom: 16px;
+}
+
+/* ─── SESSION SELECTOR ─── */
+#nav-session {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
 }

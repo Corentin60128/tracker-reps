@@ -4,6 +4,7 @@ if ('serviceWorker' in navigator) {
 
 let currentMonth = 1
 let currentWeek = 1
+let currentSession = null
 let programmeData = null
 let currentView = 'session'
 
@@ -11,10 +12,32 @@ fetch('assets/data/programme.json')
     .then(response => response.json())
     .then(data => {
         programmeData = data
+
+        // Default session based on day
+        const today = new Date().getDay()
+        const sessionByDay = { 1: 0, 2: 1, 3: 2, 4: 3, 5: 4 }
+        currentSession = sessionByDay[today] ?? 0
+
+        populateSessionSelect()
         displaySession()
         document.getElementById('month-1').classList.add('active')
         document.getElementById('week-1').classList.add('active')
     })
+
+function populateSessionSelect() {
+    const nav = document.getElementById('nav-session')
+    if (!nav) return
+    nav.innerHTML = programmeData.sessions.map((s, i) =>
+        `<li id="session-${i}" onclick="setSession(${i})" ${i === currentSession ? 'class="active"' : ''}>${s.titre}</li>`
+    ).join('')
+}
+
+function setSession(index) {
+    currentSession = parseInt(index)
+    document.querySelectorAll('#nav-session li').forEach(li => li.classList.remove('active'))
+    document.getElementById(`session-${index}`).classList.add('active')
+    displaySession()
+}
 
 // ─────────────────────────────────────────────
 // VIEW NAVIGATION
@@ -46,18 +69,7 @@ function showView(view) {
 // ─────────────────────────────────────────────
 
 function displaySession() {
-    const today = new Date().getDay()
-
-    const sessionByDay = {
-        1: 0,
-        2: 1,
-        3: 2,
-        4: 3,
-        5: 4
-    }
-
-    const sessionIndex = sessionByDay[today]
-    const session = programmeData.sessions[sessionIndex]
+    const session = programmeData.sessions[currentSession]
     const main = document.getElementById('main')
 
     let exercisesHTML = ''
