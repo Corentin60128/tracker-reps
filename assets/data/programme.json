@@ -9,7 +9,7 @@
                     "id": 1,
                     "nom": "Squat classique à la barre",
                     "series": 4,
-                    "reps": "8-10",
+                    "reps": "6-8",
                     "superset": false
                 },
                 {
@@ -29,20 +29,13 @@
                 {
                     "id": 4,
                     "nom": "Leg Extension",
-                    "series": 4,
+                    "series": 3,
                     "reps": "12-15",
                     "superset": false
                 },
                 {
                     "id": 5,
                     "nom": "Adducteurs machine",
-                    "series": 4,
-                    "reps": "12-15",
-                    "superset": false
-                },
-                {
-                    "id": 6,
-                    "nom": "Goblet Squat talons surélevés",
                     "series": 4,
                     "reps": "12-15",
                     "superset": false
@@ -54,7 +47,7 @@
                     "type": "temps"
                 },
                 {
-                    "nom": "Gainage oblique G+D",
+                    "nom": "Pallof press",
                     "type": "temps"
                 },
                 {
@@ -84,9 +77,9 @@
                 },
                 {
                     "id": 3,
-                    "nom": "Shoulder Press guidée",
+                    "nom": "Oiseau à la poulie vis-à-vis",
                     "series": 4,
-                    "reps": "8-10",
+                    "reps": "12-15",
                     "superset": false
                 },
                 {
@@ -164,7 +157,7 @@
                 {
                     "id": 5,
                     "nom": "Banc à lombaires",
-                    "series": 4,
+                    "series": 3,
                     "reps": "12-15",
                     "superset": false
                 },
@@ -191,7 +184,7 @@
                 },
                 {
                     "id": 2,
-                    "nom": "Low Row à disques",
+                    "nom": "Rowing bûcheron aux haltères",
                     "series": 4,
                     "reps": "8-10",
                     "superset": false
@@ -205,82 +198,103 @@
                 },
                 {
                     "id": 4,
-                    "nom": "Biceps Curl supination haltères",
-                    "series": 4,
+                    "nom": "Curl marteau aux haltères",
+                    "series": 3,
                     "reps": "12-15",
                     "superset": false
                 },
                 {
                     "id": 5,
-                    "nom": "Curl Larry Scott barre EZ",
-                    "series": 4,
+                    "nom": "Curl poulie base à la corde",
+                    "series": 3,
                     "reps": "12-15",
                     "superset": false
                 }
             ],
             "circuit_abdos": [
                 {
-                    "nom": "Gainage ventral",
-                    "type": "temps"
+                    "nom": "Gainage ventral actif",
+                    "type": "temps",
+                    "temps": "30-45 sec"
+                    
                 },
                 {
                     "nom": "Gainage oblique G+D",
-                    "type": "temps"
+                    "type": "temps",
+                    "temps": "30 sec / côté"
                 },
                 {
-                    "nom": "Superman",
-                    "type": "temps"
+                    "nom": "Deadbug",
+                    "type": "temps",
+                    "reps": "10-12 reps contrôlées"
                 }
             ]
         },
         {
-            "id": 5,
-            "titre": "Full Body",
-            "focus": "Séance complète",
-            "exercices": [
-                {
-                    "id": 1,
-                    "nom": "Squat Smith Machine",
-                    "series": 4,
-                    "reps": "8-10",
-                    "superset": false
-                },
-                {
-                    "id": 2,
-                    "nom": "Extension mollets debout Smith Machine",
-                    "series": 4,
-                    "reps": "12-15",
-                    "superset": false
-                },
-                {
-                    "id": 3,
-                    "nom": "Chest Press guidée",
-                    "series": 4,
-                    "reps": "8-10",
-                    "superset": false
-                },
-                {
-                    "id": 4,
-                    "nom": "Rowing bûcheron haltère",
-                    "series": 4,
-                    "reps": "8-10",
-                    "superset": false
-                },
-                {
-                    "id": 5,
-                    "nom": "Shoulder Press à charge libre",
-                    "series": 4,
-                    "reps": "8-10",
-                    "superset": false
-                },
-                {
-                    "id": 6,
-                    "nom": "Fentes marchées",
-                    "series": 4,
-                    "reps": "20 pas",
-                    "superset": false
-                }
-            ]
+      "id": 5,
+      "titre": "Haut & Bas du corps",
+      "focus": "Explosivité, Dos & Stabilité",
+      "exercices": [
+        {
+          "id": 1,
+          "nom": "Box Jumps (hauteur modérée/haute)",
+          "series": 4,
+          "reps": "5 sauts max",
+          "superset": false,
+          "notes": "100% de vitesse d'impulsion, atterrissage souple, 90s-2min de repos"
+        },
+        {
+          "id": 2,
+          "nom": "Tirage horizontal poulie basse prise neutre",
+          "series": 4,
+          "reps": "8-10",
+          "superset": false
+        },
+        {
+          "id": 3,
+          "nom": "Face Pulls à la poulie haute",
+          "series": 4,
+          "reps": "12-15",
+          "superset": false,
+          "notes": "Tirer vers le front, coudes hauts, focus arrière d'épaule et omoplates"
+        },
+        {
+          "id": 4,
+          "nom": "Fentes bulgares aux haltères",
+          "series": 3,
+          "reps": "8-10 / jambe",
+          "superset": false
+        },
+        {
+          "id": 5,
+          "nom": "Extension mollets debout Smith Machine",
+          "series": 4,
+          "reps": "12-15",
+          "superset": false
+        },
+        {
+          "id": 6,
+          "nom": "Pallof Press à la poulie",
+          "series": 3,
+          "reps": "8-10 / côté",
+          "superset": false
         }
-    ]
+      ],
+      "circuit_mobilite_fin": [
+        {
+          "nom": "Étirement psoas / fléchisseurs de hanche au sol",
+          "duree": "45 sec / côté"
+        },
+        {
+          "nom": "Posture de l'enfant (décompression dos & dorsaux)",
+          "duree": "1 min"
+        },
+        {
+          "nom": "Mobilité hanches 90/90 fluide",
+          "duree": "1 min"
+        }
+      ]
+    }
+  ]
 }
+        
