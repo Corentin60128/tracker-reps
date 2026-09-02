@@ -255,8 +255,7 @@
           "nom": "Face Pulls à la poulie haute",
           "series": 4,
           "reps": "12-15",
-          "superset": false,
-          "notes": "Tirer vers le front, coudes hauts, focus arrière d'épaule et omoplates"
+          "superset": false
         },
         {
           "id": 4,
